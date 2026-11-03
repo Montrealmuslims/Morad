@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Climb: placement test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF4FA; --sky:#D4EAF6; --card:#FFFFFF; --ink:#1B2A3A; --muted:#5A6B7C; --line:#CFE0EC;
+  --mount:#9DB8CC; --mount2:#7F9DB4; --snow:#FFFFFF;
+  --a1:#3FA34D; --a2:#2E86C1; --b1:#E9A21A; --b2:#E4572E; --c1:#7A45B5;
+  --good:#23915A; --bad:#D23F3F; --goodbg:#E3F5EA; --badbg:#FBE6E6;
+  --focus:#2E86C1;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1B2B; --sky:#14243A; --card:#182A40; --ink:#EAF2F8; --muted:#9FB3C6; --line:#2A4360;
+    --mount:#2B4562; --mount2:#22384F; --snow:#C9D8E6;
+    --goodbg:#163A2A; --badbg:#3F1E22; --good:#4CC583; --bad:#F06B6B; --focus:#6FB6E8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1B2B; --sky:#14243A; --card:#182A40; --ink:#EAF2F8; --muted:#9FB3C6; --line:#2A4360;
+  --mount:#2B4562; --mount2:#22384F; --snow:#C9D8E6;
+  --goodbg:#163A2A; --badbg:#3F1E22; --good:#4CC583; --bad:#F06B6B; --focus:#6FB6E8;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Baloo Bhaijaan 2","Trebuchet MS",system-ui,sans-serif;
+  font-size:18px; line-height:1.45; min-height:100vh;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 48px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0 8px}
+.brand{font-weight:800;font-size:1.35rem;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.brand svg{width:30px;height:30px}
+.tools{display:flex;gap:6px}
+.iconbtn{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:4px 10px;font-size:.95rem;font-weight:600}
+.iconbtn[aria-pressed="true"]{border-color:var(--focus)}
+
+/* the trail */
+.trail{background:var(--sky);border-radius:22px;padding:6px 6px 0;margin-bottom:16px;overflow:hidden}
+.trail svg{display:block;width:100%;height:auto}
+.trail .lbl{font:700 15px "Baloo Bhaijaan 2",sans-serif;fill:var(--ink)}
+#climber{transition:transform .9s cubic-bezier(.5,1.6,.4,1)}
+
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:22px 20px}
+h1{font-size:2.1rem;line-height:1.1;margin:0 0 8px;font-weight:800}
+h2{font-size:1.5rem;line-height:1.2;margin:0 0 10px;font-weight:800}
+p{margin:0 0 12px}
+.muted{color:var(--muted)}
+.ar{direction:rtl;font-size:.95rem;color:var(--muted);margin-top:-6px}
+
+label.field{display:block;font-weight:600;margin:14px 0 6px}
+input[type=text],textarea{width:100%;font:inherit;font-size:1.15rem;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.avatars{display:flex;flex-wrap:wrap;gap:8px}
+.avatars button{font-size:1.8rem;width:58px;height:58px;border-radius:16px;border:2px solid var(--line);background:var(--bg);line-height:1}
+.avatars button[aria-pressed="true"]{border-color:var(--a2);background:var(--sky);transform:scale(1.06)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:16px;padding:12px 22px;font-weight:700;font-size:1.1rem;background:var(--a2);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-weight:600}
+.pill{display:inline-block;border-radius:999px;padding:2px 12px;font-size:.9rem;font-weight:700;color:#fff}
+.streak{font-weight:700;color:var(--b2)}
+.instr{font-weight:700;font-size:1rem;color:var(--muted);margin-bottom:4px}
+.prompt{font-size:1.45rem;font-weight:700;line-height:1.3;margin:6px 0 16px}
+.prompt .big{font-size:3.6rem;display:block;line-height:1.1}
+.gap{display:inline-block;min-width:3.2em;border-bottom:3px solid currentColor;margin:0 4px}
+.passage{background:var(--bg);border-left:5px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:1.05rem}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.opts.long{grid-template-columns:1fr}}
+.opt{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:1.1rem;font-weight:600;min-height:56px}
+.opt:hover:not([disabled]){border-color:var(--focus)}
+.opt.right{background:var(--goodbg);border-color:var(--good)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.play{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.playbtn{width:72px;height:72px;border-radius:50%;border:none;background:var(--a2);color:#fff;font-size:1.9rem;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.playbtn:active{transform:translateY(3px);box-shadow:none}
+.transcript{font-style:italic;color:var(--muted)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:56px}
+.answerline{border:2px dashed var(--line);border-radius:16px;padding:8px;margin-bottom:12px}
+.tile{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:6px 14px;font-weight:700;font-size:1.15rem}
+.answerline .tile{background:var(--sky)}
+.feedback{margin-top:16px;border-radius:14px;padding:10px 14px;font-weight:600}
+.feedback.good{background:var(--goodbg);color:var(--good)}
+.feedback.bad{background:var(--badbg);color:var(--bad)}
+.dots{display:flex;gap:6px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line);display:block}
+.dots i.ok{background:var(--good)} .dots i.no{background:var(--bad)} .dots i.now{outline:2px solid var(--muted);outline-offset:1px}
+
+/* camp / result */
+.center{text-align:center}
+.badge{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:150px;height:150px;border-radius:50%;color:#fff;margin:6px auto 14px;border:6px solid var(--card);box-shadow:0 0 0 4px currentColor}
+.badge b{font-size:3rem;line-height:1;font-weight:800;color:#fff}
+.badge span{font-size:1rem;font-weight:700;color:#fff}
+.skills{margin:18px 0 6px;text-align:left}
+.skill{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;margin:8px 0;font-weight:600}
+.bar{height:14px;border-radius:7px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;border-radius:7px}
+.tip{background:var(--bg);border-radius:14px;padding:12px 14px;text-align:left;margin-top:14px}
+.pop{animation:pop .6s cubic-bezier(.4,1.8,.5,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* board */
+.board{list-style:none;padding:0;margin:0}
+.board li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:2px solid var(--line)}
+.board .av{font-size:2rem}
+.board .who{flex:1;min-width:0}
+.board .who b{display:block;font-size:1.15rem}
+.board .lv{font-weight:800;color:#fff;border-radius:12px;padding:4px 10px;white-space:nowrap}
+.del{background:none;border:none;color:var(--muted);font-size:1.2rem;padding:4px 8px}
+
+canvas#confetti{position:fixed;inset:0;pointer-events:none;width:100%;height:100%;z-index:50}
+@media (prefers-reduced-motion:reduce){
+  #climber{transition:none}.pop{animation:none}
+}
+</style>
+</head>
+<body>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 28 L12 10 L17 18 L21 12 L30 28 Z" fill="var(--a2)"/><path d="M12 10 L15 15 L12 14 L9.5 15 Z" fill="var(--snow)"/><path d="M21 4 v8" stroke="var(--b2)" stroke-width="2"/><path d="M21 4 l6 2 -6 2z" fill="var(--b2)"/></svg>
+      English Climb
+    </div>
+    <div class="tools">
+      <button class="iconbtn" id="arBtn" aria-pressed="false" title="Arabic help">عربي</button>
+      <button class="iconbtn" id="soundBtn" aria-pressed="true" title="Sound on or off">🔊</button>
+      <button class="iconbtn" id="boardBtn" title="See everyone’s results">🏆</button>
+    </div>
+  </header>
+
+  <div class="trail" aria-hidden="true">
+    <svg viewBox="0 0 500 150" id="trailSvg">
+      <polygon points="0,150 60,110 110,120 190,70 240,90 330,40 380,55 455,8 500,30 500,150" fill="var(--mount)"/>
+      <polygon points="0,150 90,128 160,135 260,105 330,118 420,90 500,110 500,150" fill="var(--mount2)"/>
+      <polygon points="455,8 470,22 460,20 450,26 442,18" fill="var(--snow)"/>
+      <path d="M40 128 Q90 120 140 108 T250 84 T350 58 T452 26" fill="none" stroke="var(--snow)" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <g id="camps"></g>
+      <text id="climber" font-size="30" text-anchor="middle" dominant-baseline="central">🧗</text>
+    </svg>
+  </div>
+
+  <!-- START -->
+  <section class="card" id="sStart">
+    <h1>How high can you climb?</h1>
+    <p>Answer questions to climb the English mountain. Each camp is harder than the last. Your level is the highest camp you reach.</p>
+    <p class="ar" data-ar>أجب عن الأسئلة لتصعد جبل الإنجليزية. كل محطة أصعب من التي قبلها، ومستواك هو أعلى محطة تصل إليها.</p>
+    <label class="field" for="nameIn">Your name</label>
+    <input type="text" id="nameIn" maxlength="20" autocomplete="off" placeholder="Type your name">
+    <label class="field">Pick your climber</label>
+    <div class="avatars" id="avatars"></div>
+    <div class="row">
+      <button class="btn" id="startBtn" disabled>Start climbing</button>
+      <span class="muted">About 10–15 minutes</span>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="card" id="sQuiz" hidden>
+    <div class="qhead">
+      <span class="pill" id="qLevel">A1</span>
+      <div class="dots" id="dots"></div>
+      <span class="streak" id="streak"></span>
+    </div>
+    <div class="instr" id="instr"></div>
+    <div class="ar" id="instrAr" data-ar></div>
+    <div id="qBody"></div>
+    <div id="feedback" role="status" aria-live="polite"></div>
+    <div class="row" id="qActions"></div>
+  </section>
+
+  <!-- CAMP -->
+  <section class="card center" id="sCamp" hidden></section>
+
+  <!-- RESULT -->
+  <section class="card center" id="sResult" hidden></section>
+
+  <!-- BOARD -->
+  <section class="card" id="sBoard" hidden>
+    <h2>Everyone’s results</h2>
+    <p class="muted">Tests taken on this device, plus every result someone sends you.</p>
+    <ul class="board" id="boardList"></ul>
+    <h3 style="margin:22px 0 4px">Add a result someone sent you</h3>
+    <p class="muted">Tap the link in their message, or paste the whole message here.</p>
+    <textarea id="importIn" rows="3" placeholder="Paste the message here"></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn ghost" id="importBtn">Add result</button><span id="importMsg" role="status" class="muted"></span></div>
+    <div class="row">
+      <button class="btn" id="newPlayerBtn">Test someone new</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const LEVELS = [
+  {code:"A1", name:"Explorer",    color:"var(--a1)", x:40,  y:128},
+  {code:"A2", name:"Trekker",     color:"var(--a2)", x:140, y:108},
+  {code:"B1", name:"Climber",     color:"var(--b1)", x:250, y:84},
+  {code:"B2", name:"Mountaineer", color:"var(--b2)", x:350, y:58},
+  {code:"C1", name:"Summit",      color:"var(--c1)", x:452, y:26}
+];
+const PASS = 4; // of 6 per camp
+
+// For choice and listen questions, the first option is the correct one; options are shuffled on screen.
+const Q = [
+ [ // A1
+  {t:"choice", s:"vocab", p:"<span class='big'>🍎</span>What is this?", o:["an apple","an orange","a banana","an egg"]},
+  {t:"listen", s:"listening", say:"seventeen", p:"Which number do you hear?", o:["17","7","70","71"], rate:.8},
+  {t:"choice", s:"grammar", p:"My brother <span class='gap'></span> ten years old.", o:["is","am","are","be"]},
+  {t:"choice", s:"vocab", p:"Which word is a colour?", o:["green","chair","run","under"]},
+  {t:"order", s:"grammar", a:["I","like","playing","football"]},
+  {t:"choice", s:"reading", p:"Someone asks: “What’s your name?” What do you say?", o:["My name is Ali.","I’m fine, thanks.","Yes, I do.","It’s Monday."], long:true}
+ ],
+ [ // A2
+  {t:"choice", s:"grammar", p:"Yesterday I <span class='gap'></span> to the market with my dad.", o:["went","go","goes","going"]},
+  {t:"listen", s:"listening", say:"The bus leaves at half past eight.", p:"What time does the bus leave?", o:["8:30","8:00","8:15","9:30"], rate:.85},
+  {t:"choice", s:"grammar", p:"Omar is <span class='gap'></span> than his sister.", o:["taller","tall","tallest","more tall"]},
+  {t:"type", s:"vocab", p:"Write the opposite of <b>cold</b>.", accept:["hot","warm"]},
+  {t:"choice", s:"reading", passage:"Sara gets up at six o’clock. She has breakfast with her family, then she walks to school with her friend Mona. After school, she plays basketball.", p:"How does Sara go to school?", o:["She walks.","By bus.","By car.","By bike."]},
+  {t:"choice", s:"grammar", p:"There aren’t <span class='gap'></span> eggs in the fridge.", o:["any","some","much","a"]}
+ ],
+ [ // B1
+  {t:"choice", s:"grammar", p:"If it rains tomorrow, we <span class='gap'></span> at home.", o:["will stay","stayed","would stayed","are stay"]},
+  {t:"choice", s:"grammar", p:"I have lived in this house <span class='gap'></span> 2015.", o:["since","for","from","ago"]},
+  {t:"listen", s:"listening", say:"I’d rather walk than take a taxi. It’s such a lovely day.", p:"What will the speaker do?", o:["Walk","Take a taxi","Stay at home","Drive"], rate:.9},
+  {t:"order", s:"grammar", a:["Where","have","you","been","all","day?"]},
+  {t:"choice", s:"vocab", p:"I was so <span class='gap'></span> after the match that I fell asleep on the sofa.", o:["exhausted","exhausting","exciting","amazing"]},
+  {t:"choice", s:"reading", passage:"Hi Omar, I’m really sorry I missed your party on Friday. My flight was cancelled and I was stuck at the airport until midnight! Let’s meet next week instead. Karim", p:"Why didn’t Karim go to the party?", o:["His flight was cancelled.","He was ill.","He forgot about it.","He had to work."], long:true}
+ ],
+ [ // B2
+  {t:"choice", s:"grammar", p:"By the time we arrived, the film <span class='gap'></span>.", o:["had already started","already starts","has already started","was already start"], long:true},
+  {t:"choice", s:"grammar", p:"The new bridge <span class='gap'></span> next year.", o:["will be built","will build","is building","builds"]},
+  {t:"listen", s:"listening", say:"Despite the heavy traffic, Karim managed to get to the interview on time.", p:"What happened to Karim?", o:["He arrived on time.","He was a little late.","He missed the interview.","The interview was cancelled."], rate:.95, long:true},
+  {t:"choice", s:"vocab", p:"Can we <span class='gap'></span> the meeting until Thursday? I’m too busy today.", o:["put off","put on","put up","put out"]},
+  {t:"type", s:"grammar", p:"Complete with the right form of <b>know</b>:<br>I wish I <span class='gap'></span> the answer, but I don’t.", accept:["knew"]},
+  {t:"choice", s:"grammar", p:"She suggested <span class='gap'></span> the museum on Saturday.", o:["visiting","to visit","visit","that visiting"]}
+ ],
+ [ // C1
+  {t:"choice", s:"grammar", p:"Hardly <span class='gap'></span> the house when it started to pour with rain.", o:["had I left","I had left","did I leave","I left"]},
+  {t:"choice", s:"vocab", p:"Her argument was so <span class='gap'></span> that nobody in the room could disagree.", o:["compelling","compelled","compulsive","compulsory"]},
+  {t:"choice", s:"grammar", p:"It’s high time you <span class='gap'></span> looking for a job.", o:["started","start","will start","have started"]},
+  {t:"choice", s:"reading", passage:"Remote work is often praised for the flexibility it offers. Critics, however, argue that it removes the casual conversations that frequently lead to new ideas. Supporters reply that carefully planned online activities can bring back much of that unplanned creativity.", p:"What do the supporters believe?", o:["Planned online activities can replace some casual interaction.","New ideas don’t need conversation.","Remote work should be stopped.","Offices are more flexible than home."], long:true},
+  {t:"listen", s:"listening", say:"Had I known about the delay, I wouldn’t have rushed to the station.", p:"What does the speaker mean?", o:["They rushed because they didn’t know about the delay.","They knew about the delay and stayed home.","They missed their train.","There was no delay."], rate:1, long:true},
+  {t:"choice", s:"vocab", p:"He has never been willing to <span class='gap'></span> responsibility for his mistakes.", o:["take","make","do","get"]}
+ ]
+];
+
+const INSTR = {
+  vocab:["Choose the right answer","اختر الإجابة الصحيحة"],
+  grammar:["Fill the gap","اختر الكلمة المناسبة للفراغ"],
+  listening:["Press play, listen, then choose","اضغط تشغيل، استمع، ثم اختر"],
+  reading:["Read and answer","اقرأ ثم أجب"],
+  order:["Tap the words to make a sentence","اضغط على الكلمات لتكوين جملة صحيحة"],
+  type:["Type your answer","اكتب إجابتك"]
+};
+const SKILL_NAMES = {vocab:"Vocabulary", grammar:"Grammar", listening:"Listening", reading:"Reading"};
+const SKILL_TIPS = {
+  vocab:"Build vocabulary with picture cards, labelling things around the house, and short daily word games.",
+  grammar:"Practise grammar with short sentences: say what you did yesterday, what you will do tomorrow, and compare things.",
+  listening:"Listen every day: cartoons or YouTube with English subtitles, songs, and repeating sentences out loud.",
+  reading:"Read a little every day: comics, short stories, or simple news, then retell it in your own words."
+};
+const RESULT_TEXT = [
+  ["Pre-A1","Starter","Just starting out. Begin with the alphabet, numbers, colours, family words and simple greetings."],
+  ["A1","Explorer","Understands simple words and short sentences. Next steps: daily routines, the past simple, and short conversations."],
+  ["A2","Trekker","Can handle everyday situations. Next steps: the present perfect, future plans, and reading longer stories."],
+  ["B1","Climber","An independent learner who can talk about experiences and opinions. Next steps: the passive, reported speech, and phrasal verbs."],
+  ["B2","Mountaineer","A confident user of English. Next steps: advanced grammar, richer vocabulary, and understanding fast natural speech."],
+  ["C1","Summit","Advanced! Next steps: idioms, writing style, and reading real books and articles for pleasure."]
+];
+const AVATARS = ["🧗","🦁","🦅","🐪","🚀","🐯","🦊","⚽"];
+
+let player = {name:"", avatar:"🧗"};
+let st;
+let muted = false, arOn = false;
+const $ = id => document.getElementById(id);
+
+/* ---------- storage ---------- */
+function loadBoard(){ try{ return JSON.parse(localStorage.getItem("climb-results")||"[]") }catch(e){ return [] } }
+function saveBoard(list){ try{ localStorage.setItem("climb-results", JSON.stringify(list)) }catch(e){} }
+function encodeRec(r){
+  const c={n:r.name,a:r.avatar,i:r.idx,s:r.score,d:r.date,t:r.t,k:r.skills};
+  return btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeRec(code){
+  try{
+    let b=code.replace(/-/g,"+").replace(/_/g,"/"); while(b.length%4) b+="=";
+    const c=JSON.parse(decodeURIComponent(escape(atob(b))));
+    if(typeof c.n!=="string" || typeof c.i!=="number" || c.i<0 || c.i>5) return null;
+    return {name:c.n.slice(0,20), avatar:String(c.a||"🧗").slice(0,4), level:RESULT_TEXT[c.i][0], idx:c.i, score:String(c.s||"").slice(0,7), date:String(c.d||"").slice(0,20), t:Number(c.t)||0, skills:c.k||{}};
+  }catch(e){ return null }
+}
+function addToBoard(r){
+  const list=loadBoard();
+  if(r.t && list.some(x=>x.name===r.name && x.t===r.t)) return false;
+  list.unshift(r); saveBoard(list.slice(0,50)); return true;
+}
+function importText(text){
+  const m=String(text).match(/(?:#r-|EC1:)[A-Za-z0-9_-]+/g)||[];
+  let added=0;
+  m.forEach(s=>{ const r=decodeRec(s.replace(/^(#r-|EC1:)/,"")); if(r && addToBoard(r)) added++ });
+  return {found:m.length, added};
+}
+try{ arOn = localStorage.getItem("climb-ar")==="1"; muted = localStorage.getItem("climb-mute")==="1" }catch(e){}
+
+/* ---------- sound ---------- */
+let actx;
+function tones(freqs, dur=.12, type="sine"){
+  if(muted) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    freqs.forEach((f,i)=>{
+      const o=actx.createOscillator(), g=actx.createGain();
+      o.type=type; o.frequency.value=f;
+      const t=actx.currentTime+i*dur;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.18,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t+dur+.02);
+    });
+  }catch(e){}
+}
+const sGood=()=>tones([660,880]), sBad=()=>tones([300,220],.15,"triangle"), sCamp=()=>tones([523,659,784,1046],.13);
+
+/* ---------- speech ---------- */
+const hasTTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+function getVoices(){
+  return new Promise(res=>{
+    if(!hasTTS) return res([]);
+    const v = speechSynthesis.getVoices();
+    if(v.length) return res(v);
+    let done=false;
+    const fin=()=>{ if(done) return; done=true; res(speechSynthesis.getVoices()) };
+    speechSynthesis.addEventListener("voiceschanged", fin, {once:true});
+    setTimeout(fin, 1500);
+  });
+}
+// Speaks the text; calls onFail if the browser can’t produce speech.
+async function speak(text, rate, onFail){
+  if(!hasTTS){ onFail(); return }
+  const voices = await getVoices();
+  const en = voices.filter(v=>/^en(-|_)/i.test(v.lang));
+  const pick = en.find(x=>/en-(US|GB)/i.test(x.lang)&&/Google|Samantha|Natural|Daniel|Microsoft/i.test(x.name)) || en.find(x=>/en-(US|GB)/i.test(x.lang)) || en[0];
+  try{ speechSynthesis.cancel(); speechSynthesis.resume(); }catch(e){}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = pick ? pick.lang : "en-US"; u.rate = rate||.9; u.volume = 1;
+  if(pick) u.voice = pick;
+  let started=false;
+  u.onstart = ()=>{ started=true };
+  u.onerror = e=>{ if(e.error!=="interrupted" && e.error!=="canceled") onFail() };
+  // A short pause after cancel() avoids a Chrome bug where speech silently never starts.
+  setTimeout(()=>{ try{ speechSynthesis.speak(u) }catch(e){ onFail() } }, 80);
+  setTimeout(()=>{ if(!started && !speechSynthesis.speaking) onFail() }, 3000);
+}
+if(hasTTS){ speechSynthesis.getVoices(); speechSynthesis.addEventListener?.("voiceschanged", ()=>{}); }
+
+/* ---------- helpers ---------- */
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a }
+function show(id){ ["sStart","sQuiz","sCamp","sResult","sBoard"].forEach(s=>$(s).hidden = s!==id); window.scrollTo({top:0}) }
+function applyAr(){ document.querySelectorAll("[data-ar]").forEach(e=>e.hidden=!arOn); $("arBtn").setAttribute("aria-pressed",arOn) }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])) }
+
+/* ---------- trail ---------- */
+function drawTrail(reached){
+  const g=$("camps"); g.innerHTML="";
+  LEVELS.forEach((L,i)=>{
+    const done = i<reached;
+    g.insertAdjacentHTML("beforeend",
+      `<g><line x1="${L.x}" y1="${L.y}" x2="${L.x}" y2="${L.y-24}" stroke="var(--ink)" stroke-width="2"/>
+       <path d="M${L.x} ${L.y-24} l16 6 -16 6z" fill="${done?L.color:'var(--card)'}" stroke="${L.color}" stroke-width="2"/>
+       <circle cx="${L.x}" cy="${L.y}" r="6" fill="${L.color}"/>
+       <text class="lbl" x="${L.x}" y="${Math.min(L.y+22,146)}" text-anchor="middle">${L.code}</text></g>`);
+  });
+}
+function moveClimber(i, atBase){
+  const L = LEVELS[Math.min(i,LEVELS.length-1)];
+  const x = atBase ? 14 : L.x-16, y = atBase ? 138 : L.y-6;
+  $("climber").textContent = player.avatar;
+  $("climber").setAttribute("transform",`translate(${x} ${y})`);
+}
+
+/* ---------- start screen ---------- */
+AVATARS.forEach(a=>{
+  const b=document.createElement("button"); b.type="button"; b.textContent=a; b.setAttribute("aria-label","Climber "+a);
+  b.setAttribute("aria-pressed", a===player.avatar);
+  b.onclick=()=>{ player.avatar=a; document.querySelectorAll("#avatars button").forEach(x=>x.setAttribute("aria-pressed",x===b)); moveClimber(0,true) };
+  $("avatars").appendChild(b);
+});
+$("nameIn").addEventListener("input",e=>{ $("startBtn").disabled = !e.target.value.trim() });
+$("nameIn").addEventListener("keydown",e=>{ if(e.key==="Enter" && e.target.value.trim()) startTest() });
+$("startBtn").onclick=startTest;
+$("arBtn").onclick=()=>{ arOn=!arOn; try{localStorage.setItem("climb-ar",arOn?"1":"0")}catch(e){} applyAr() };
+$("soundBtn").onclick=()=>{ muted=!muted; try{localStorage.setItem("climb-mute",muted?"1":"0")}catch(e){} $("soundBtn").textContent=muted?"🔇":"🔊"; $("soundBtn").setAttribute("aria-pressed",!muted) };
+$("boardBtn").onclick=showBoard;
+$("newPlayerBtn").onclick=()=>{ $("nameIn").value=""; $("startBtn").disabled=true; drawTrail(0); moveClimber(0,true); show("sStart"); $("nameIn").focus() };
+$("importBtn").onclick=()=>{
+  const r=importText($("importIn").value);
+  if(r.added){ $("importIn").value=""; showBoard() }
+  $("importMsg").textContent = !r.found ? "No result found in that text." : r.added ? `Added ${r.added} result${r.added>1?"s":""} ✓` : "That result is already on the board.";
+};
+
+function startTest(){
+  player.name = $("nameIn").value.trim();
+  st = {lv:0, qi:0, levelScores:[], marks:[], streak:0, best:0, skills:{vocab:[0,0],grammar:[0,0],listening:[0,0],reading:[0,0]}, order:shuffleLevels()};
+  drawTrail(0); moveClimber(0,true);
+  renderQ(); show("sQuiz");
+}
+function shuffleLevels(){ return Q.map(l=>shuffle(l)) }
+
+/* ---------- questions ---------- */
+function renderQ(){
+  const q = st.order[st.lv][st.qi], L = LEVELS[st.lv];
+  st.answered=false;
+  $("qLevel").textContent = `${L.code} · Camp ${st.lv+1}`; $("qLevel").style.background=L.color;
+  $("dots").innerHTML = st.order[st.lv].map((_,i)=>`<i class="${st.marks[i]===true?'ok':st.marks[i]===false?'no':''} ${i===st.qi?'now':''}"></i>`).join("");
+  $("streak").textContent = st.streak>=2 ? `🔥 ${st.streak}` : "";
+  const key = q.t==="order"?"order":q.t==="type"?"type":q.s;
+  $("instr").textContent = INSTR[key][0]; $("instrAr").textContent = INSTR[key][1];
+  $("feedback").className=""; $("feedback").textContent="";
+  $("qActions").innerHTML="";
+  const body=$("qBody"); body.innerHTML="";
+
+  if(q.passage) body.insertAdjacentHTML("beforeend",`<div class="passage">${q.passage}</div>`);
+
+  if(q.t==="listen"){
+    let plays=0;
+    body.insertAdjacentHTML("beforeend",`<div class="play"><button class="playbtn" id="playBtn" aria-label="Play the audio">▶</button><span class="muted" id="playInfo">You can listen 3 times.</span></div><p><button class="iconbtn" id="noSound" type="button">Can’t hear anything?</button></p><p class="transcript" id="transcript" hidden></p>`);
+    const fallback=()=>{
+      $("transcript").hidden=false;
+      $("transcript").innerHTML=`No sound from this device. Ask someone to read this sentence aloud, without showing it: “${esc(q.say)}”`;
+      $("noSound").hidden=true;
+    };
+    $("noSound").onclick=fallback;
+    $("playBtn").onclick=()=>{
+      if(plays>=3) return;
+      plays++;
+      speak(q.say, q.rate, fallback);
+      $("playInfo").textContent = plays>=3 ? "No more listens left." : `Listens left: ${3-plays}`;
+      if(plays>=3) $("playBtn").disabled=true;
+    };
+  }
+
+  if(q.t==="choice"||q.t==="listen"){
+    body.insertAdjacentHTML("beforeend",`<div class="prompt">${q.p}</div>`);
+    const wrap=document.createElement("div"); wrap.className="opts"+(q.long?" long":"");
+    shuffle(q.o).forEach(opt=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=opt;
+      b.onclick=()=>{
+        if(st.answered) return;
+        const right = opt===q.o[0];
+        wrap.querySelectorAll(".opt").forEach(x=>{ x.disabled=true; if(x.textContent===q.o[0]) x.classList.add("right") });
+        if(!right) b.classList.add("wrong");
+        finish(right, q, right?null:`The answer is “${q.o[0]}”.`);
+      };
+      wrap.appendChild(b);
+    });
+    body.appendChild(wrap);
+  }
+
+  if(q.t==="type"){
+    body.insertAdjacentHTML("beforeend",`<div class="prompt">${q.p}</div><input type="text" id="typeIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Your answer">`);
+    const check=document.createElement("button"); check.className="btn"; check.textContent="Check answer"; check.disabled=true;
+    $("typeIn").addEventListener("input",e=>check.disabled=!e.target.value.trim());
+    const go=()=>{
+      if(st.answered) return;
+      const v=$("typeIn").value.trim().toLowerCase().replace(/[.!?]/g,"");
+      if(!v) return;
+      const right=q.accept.includes(v);
+      $("typeIn").disabled=true; check.remove();
+      finish(right,q,right?null:`The answer is “${q.accept[0]}”.`);
+    };
+    check.onclick=go;
+    $("typeIn").addEventListener("keydown",e=>{ if(e.key==="Enter") go() });
+    $("qActions").appendChild(check);
+    setTimeout(()=>$("typeIn").focus(),50);
+  }
+
+  if(q.t==="order"){
+    let pool, built=[];
+    do{ pool=shuffle(q.a.map((w,i)=>({w,i}))) }while(q.a.length>1 && pool.every((p,i)=>p.i===i));
+    body.insertAdjacentHTML("beforeend",`<div class="tiles answerline" id="built" aria-label="Your sentence"></div><div class="tiles" id="pool"></div>`);
+    const check=document.createElement("button"); check.className="btn"; check.textContent="Check sentence"; check.disabled=true;
+    const draw=()=>{
+      $("built").innerHTML=""; $("pool").innerHTML="";
+      built.forEach((t,k)=>{ const b=document.createElement("button"); b.className="tile"; b.textContent=t.w; b.onclick=()=>{ if(st.answered)return; built.splice(k,1); pool.push(t); draw() }; $("built").appendChild(b) });
+      pool.forEach((t,k)=>{ const b=document.createElement("button"); b.className="tile"; b.textContent=t.w; b.onclick=()=>{ if(st.answered)return; pool.splice(k,1); built.push(t); draw() }; $("pool").appendChild(b) });
+      check.disabled = pool.length>0;
+    };
+    check.onclick=()=>{
+      const right = built.map(t=>t.w).join(" ")===q.a.join(" ");
+      check.remove();
+      finish(right,q,right?null:`The sentence is “${q.a.join(" ")}”.`);
+    };
+    draw(); $("qActions").appendChild(check);
+  }
+}
+
+function finish(right, q, msg){
+  st.answered=true;
+  if(hasTTS) speechSynthesis.cancel();
+  st.marks[st.qi]=right;
+  st.skills[q.s][1]++; if(right) st.skills[q.s][0]++;
+  if(right){ st.streak++; st.best=Math.max(st.best,st.streak); sGood() } else { st.streak=0; sBad() }
+  const praise=["Nice one!","Great!","Correct!","You got it!","Brilliant!"];
+  $("feedback").className="feedback "+(right?"good":"bad");
+  $("feedback").textContent = right ? (st.streak>=3?`${praise[Math.floor(Math.random()*praise.length)]} ${st.streak} in a row 🔥`:praise[Math.floor(Math.random()*praise.length)]) : `Not quite. ${msg}`;
+  $("dots").children[st.qi].className = right?"ok":"no";
+  $("streak").textContent = st.streak>=2 ? `🔥 ${st.streak}` : "";
+  const next=document.createElement("button"); next.className="btn"; next.textContent = st.qi===5 ? "Finish this camp" : "Next question";
+  next.onclick=nextQ;
+  $("qActions").innerHTML=""; $("qActions").appendChild(next); next.focus({preventScroll:true});
+}
+
+function nextQ(){
+  if(st.qi<5){ st.qi++; renderQ(); return }
+  const score = st.marks.filter(Boolean).length;
+  st.levelScores.push(score);
+  const passed = score>=PASS;
+  const L=LEVELS[st.lv];
+  if(passed){ drawTrail(st.lv+1); moveClimber(st.lv,false); sCamp() }
+  if(passed && st.lv<LEVELS.length-1){
+    $("sCamp").innerHTML = `
+      <div class="badge pop" style="background:${L.color};color:${L.color}"><b>${L.code}</b><span>${L.name}</span></div>
+      <h2>Camp ${L.code} reached!</h2>
+      <p>You scored ${score} out of 6. Ready for the next camp? It’s a bit harder.</p>
+      <p class="ar" data-ar>أحسنت! وصلت إلى محطة ${L.code}. المحطة القادمة أصعب قليلًا.</p>
+      <div class="row" style="justify-content:center"><button class="btn" id="contBtn" style="background:${LEVELS[st.lv+1].color}">Climb to ${LEVELS[st.lv+1].code}</button>
+      <button class="btn ghost" id="stopBtn">Stop here</button></div>`;
+    applyAr(); show("sCamp");
+    $("contBtn").onclick=()=>{ st.lv++; st.qi=0; st.marks=[]; renderQ(); show("sQuiz") };
+    $("stopBtn").onclick=()=>endTest(st.lv+1);
+  } else {
+    endTest(passed ? st.lv+1 : st.lv);
+  }
+}
+
+/* ---------- results ---------- */
+function endTest(levelIndex){ // 0 = pre-A1, 1 = A1 ... 5 = C1
+  const R = RESULT_TEXT[levelIndex];
+  const color = levelIndex===0 ? "var(--muted)" : LEVELS[levelIndex-1].color;
+  const sk = st.skills;
+  const tested = Object.keys(sk).filter(k=>sk[k][1]>0);
+  const weakest = tested.sort((a,b)=>sk[a][0]/sk[a][1]-sk[b][0]/sk[b][1])[0];
+  const total = Object.values(sk).reduce((a,v)=>a+v[0],0), asked = Object.values(sk).reduce((a,v)=>a+v[1],0);
+
+  const rec={name:player.name, avatar:player.avatar, level:R[0], idx:levelIndex, score:`${total}/${asked}`, date:new Date().toLocaleDateString(), t:Date.now(), skills:sk};
+  addToBoard(rec);
+  const code=encodeRec(rec);
+  const base=location.protocol.startsWith("http") ? location.href.split("#")[0] : "";
+  const msg=`${player.avatar} ${player.name} finished English Climb!\nLevel: ${R[0]} (${R[1]}), ${total}/${asked} correct\n${base?`Tap to add it to the results board: ${base}#r-${code}\n`:""}Result code: EC1:${code}`;
+
+  $("sResult").innerHTML = `
+    <p class="muted" style="margin:0">${esc(player.avatar)} ${esc(player.name)}’s level</p>
+    <div class="badge pop" style="background:${color};color:${color}"><b>${R[0]}</b><span>${R[1]}</span></div>
+    <h2>${levelIndex===5?"You reached the summit!":levelIndex===0?"Your climb begins here!":`You climbed to ${R[0]}!`}</h2>
+    <p>${R[2]}</p>
+    <p class="muted">${total} of ${asked} correct · best streak ${st.best}</p>
+    <div class="skills">${Object.keys(SKILL_NAMES).filter(k=>sk[k][1]>0).map(k=>{
+      const pct=Math.round(sk[k][0]/sk[k][1]*100);
+      return `<div class="skill"><span>${SKILL_NAMES[k]}</span><div class="bar"><i style="width:${pct}%;background:${color}"></i></div><span>${pct}%</span></div>`}).join("")}</div>
+    ${weakest?`<div class="tip"><b>Focus next on ${SKILL_NAMES[weakest].toLowerCase()}.</b> ${SKILL_TIPS[weakest]}</div>`:""}
+    <div class="tip" style="text-align:center"><b>Send your result to your teacher</b><br><span class="muted">So everyone’s level ends up in one list.</span>
+      <p class="ar" data-ar style="margin-top:4px">أرسل نتيجتك لأخيك حتى تظهر في قائمة النتائج.</p>
+      <div class="row" style="justify-content:center;margin-top:8px">
+        <a class="btn" id="waBtn" style="background:#1F9D55;text-decoration:none" target="_blank" rel="noopener">Send on WhatsApp</a>
+        <button class="btn ghost" id="copyBtn">Copy result</button>
+      </div></div>
+    <div class="row" style="justify-content:center">
+      <button class="btn" id="againBtn">Test someone new</button>
+      <button class="btn ghost" id="seeBoardBtn">See all results</button>
+    </div>`;
+  applyAr();
+  show("sResult");
+  $("waBtn").href="https://wa.me/?text="+encodeURIComponent(msg);
+  $("copyBtn").onclick=()=>{
+    const done=()=>{ $("copyBtn").textContent="Copied ✓" };
+    if(navigator.clipboard) navigator.clipboard.writeText(msg).then(done).catch(()=>window.prompt("Copy this message:", msg));
+    else window.prompt("Copy this message:", msg);
+  };
+  $("againBtn").onclick=()=>$("newPlayerBtn").click();
+  $("seeBoardBtn").onclick=showBoard;
+  if(levelIndex>0) confetti(color);
+}
+
+function showBoard(){
+  const list=loadBoard();
+  $("boardList").innerHTML = list.length ? list.map((r,i)=>{
+    const c = r.idx===0?"var(--muted)":LEVELS[r.idx-1].color;
+    return `<li><span class="av">${esc(r.avatar)}</span><span class="who"><b>${esc(r.name)}</b><span class="muted">${esc(r.date)} · ${esc(r.score)} correct</span></span><span class="lv" style="background:${c}">${esc(r.level)}</span><button class="del" data-i="${i}" aria-label="Delete ${esc(r.name)}’s result">✕</button></li>`}).join("")
+    : `<li><span class="muted">No results yet. When someone finishes the test, their level appears here.</span></li>`;
+  $("boardList").querySelectorAll(".del").forEach(b=>b.onclick=()=>{ const l=loadBoard(); l.splice(+b.dataset.i,1); saveBoard(l); showBoard() });
+  show("sBoard");
+}
+
+/* ---------- confetti (one celebration at the end) ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv=$("confetti"), cx=cv.getContext("2d");
+  cv.width=innerWidth; cv.height=innerHeight;
+  const cols=["#3FA34D","#2E86C1","#E9A21A","#E4572E","#7A45B5"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:Math.random()*6.28,s:6+Math.random()*6,c:cols[Math.floor(Math.random()*5)]}));
+  const t0=performance.now();
+  (function f(t){
+    cx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.r+=.1; cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.fillStyle=p.c; cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); cx.restore() });
+    if(t-t0<3500) requestAnimationFrame(f); else cx.clearRect(0,0,cv.width,cv.height);
+  })(t0);
+}
+
+/* ---------- init ---------- */
+$("soundBtn").textContent=muted?"🔇":"🔊"; $("soundBtn").setAttribute("aria-pressed",!muted);
+applyAr(); drawTrail(0); moveClimber(0,true);
+// Opening a link a brother sent (…#r-CODE) adds his result to this device’s board.
+function checkHash(){
+  if(!location.hash.startsWith("#r-")) return;
+  const r=importText(location.hash);
+  try{ history.replaceState(null,"",location.pathname+location.search) }catch(e){}
+  showBoard();
+  $("importMsg").textContent = r.added ? "New result added ✓" : r.found ? "That result is already on the board." : "";
+}
+window.addEventListener("hashchange", checkHash);
+checkHash();
+</script>
+</body>
+</html>
